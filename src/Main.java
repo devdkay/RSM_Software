@@ -6,6 +6,6 @@ public class Main {
         frame.setSize(420,420);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        System.out.println("hello1");
+        System.out.println("hello2");
     }
 }
