@@ -63,13 +63,11 @@ public class UserAuthentication {
                         if (username.equals(storedUsername) && password.equals(storedPassword)) {
                             System.out.println("Welcome, " + username + "! Your role is: " + role);
 
+                            DocumentManagement.manageDocuments(scanner, role);
+
                             if ("tenant".equalsIgnoreCase(role)) {
                                 PaymentManagement.makePayment(scanner, username, role);
                             }
-
-                            DocumentManagement.uploadDocument(scanner, username, role);
-                            DocumentManagement.deleteDocument(scanner, username, role);
-                            DocumentManagement.readDocument(scanner, username, role);
                             return true;
                         }
 
