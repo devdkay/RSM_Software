@@ -1,3 +1,14 @@
+/*
+ *  COMP 2663 Assignment 4 
+ *  
+ *  Project Team Members:
+    *  Manav Patel (0301184) (33.3%)
+    *  Shishya Agrawal (0264007) (33.3%)
+    *  Dev Kumar (0263897) (33.3%)
+ * 
+ */
+
+
 import java.util.Scanner;
 
 public class Main {

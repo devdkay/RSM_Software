@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class DocumentManagement {
@@ -13,10 +17,10 @@ public class DocumentManagement {
 
             switch (documentManagementChoice) {
                 case 1:
-                    uploadDocument(scanner);
+                    uploadDocument(scanner, role, role);
                     break;
                 case 2:
-                    deleteDocument(scanner);
+                    deleteDocument(scanner, role, role);
                     break;
                 default:
                     System.out.println("Invalid document management choice.");
@@ -45,25 +49,44 @@ public class DocumentManagement {
         }
     }
 
-    private static void uploadDocument(Scanner scanner) {
-        System.out.print("Enter the document name: ");
-        String documentName = scanner.nextLine();
-
+    private static void uploadDocument(Scanner scanner, String username, String role) {
         try {
-            // Your logic for uploading a document
+            if ("owner".equalsIgnoreCase(role)) {
+            System.out.print("Enter the document name: ");
+            String documentName = scanner.nextLine();
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(documentName + ".txt"))) {
+                System.out.print("Enter the document content: ");
+                String content = scanner.nextLine();
+                writer.write(content);
+                System.out.println("Document uploaded successfully!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("You don't have permission to upload documents.");
+        }
             System.out.println("Document uploaded successfully!");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void deleteDocument(Scanner scanner) {
-        System.out.print("Enter the document name to delete: ");
-        String documentName = scanner.nextLine();
-
+    private static void deleteDocument(Scanner scanner, String username, String role) {
         try {
-            // Your logic for deleting a document
-            System.out.println("Document deleted successfully!");
+            if ("owner".equalsIgnoreCase(role)) {
+            System.out.print("Enter the document name to delete: ");
+            String documentName = scanner.nextLine();
+            File file = new File(documentName + ".txt");
+
+            if (file.delete()) {
+                System.out.println("Document deleted successfully!");
+            } else {
+                System.out.println("Failed to delete the document. It may not exist.");
+            }
+        } else {
+            System.out.println("You don't have permission to delete documents.");
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,8 +98,6 @@ public class DocumentManagement {
 
         try {
             // Your logic for reading a document
-            System.out.println("Document content:");
-            System.out.println("Lease terms and conditions...");
         } catch (Exception e) {
             e.printStackTrace();
         }
