@@ -62,8 +62,17 @@ public class UserAuthentication {
 
                         if (username.equals(storedUsername) && password.equals(storedPassword)) {
                             System.out.println("Welcome, " + username + "! Your role is: " + role);
+
+                            if ("tenant".equalsIgnoreCase(role)) {
+                                PaymentManagement.makePayment(scanner, username, role);
+                            }
+
+                            DocumentManagement.uploadDocument(scanner, username, role);
+                            DocumentManagement.deleteDocument(scanner, username, role);
+                            DocumentManagement.readDocument(scanner, username, role);
                             return true;
                         }
+
                     }
                 }
             } catch (IOException e) {
@@ -74,5 +83,6 @@ public class UserAuthentication {
             System.out.println("User not found. Please register.");
         }
         return false;
+
     }
 }
