@@ -1,5 +1,7 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -96,10 +98,14 @@ public class DocumentManagement {
         System.out.print("Enter the document name to read: ");
         String documentName = scanner.nextLine();
 
-        try {
-            // Your logic for reading a document
-        } catch (Exception e) {
-            e.printStackTrace();
+        try (BufferedReader reader = new BufferedReader(new FileReader(documentName + ".txt"))) {
+            String line;
+            System.out.println("Document content for " + documentName + ":");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the document: " + e.getMessage());
         }
     }
 }
