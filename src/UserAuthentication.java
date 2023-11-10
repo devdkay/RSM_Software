@@ -2,11 +2,15 @@ import java.io.*;
 import java.util.Scanner;
 
 public class UserAuthentication {
+    private static final String FILE_PATH = "users.txt";
+
     public static boolean userExists(String username) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+        ensureFileExists();  // Ensure the file exists before reading
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains("username") && line.contains(username)) {
+                if (line.contains("\"username\":\"" + username + "\"")) {
                     return true;
                 }
             }
@@ -16,7 +20,20 @@ public class UserAuthentication {
         return false;
     }
 
+    private static void ensureFileExists() {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void registerUser(Scanner scanner) {
+        ensureFileExists();  // Ensure the file exists before writing
+
         System.out.print("Enter a username: ");
         String username = scanner.nextLine();
 
@@ -27,8 +44,9 @@ public class UserAuthentication {
             System.out.print("Enter your role (owner/tenant): ");
             String role = scanner.nextLine();
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true))) {
-                writer.write("[username: " + username + "\n password: " + password + "\n role: " + role + "],");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+                String userData = String.format("{\"username\":\"%s\",\"password\":\"%s\",\"role\":\"%s\"}", username, password, role);
+                writer.write(userData);
                 writer.newLine();
                 System.out.println("User registered successfully!");
             } catch (IOException e) {
@@ -38,6 +56,7 @@ public class UserAuthentication {
             System.out.println("Username already exists. Please choose a different username.");
         }
     }
+    
 
     public static boolean login(Scanner scanner) {
         System.out.print("Enter your username: ");
@@ -50,8 +69,8 @@ public class UserAuthentication {
             try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    if (line.contains("password") && line.contains(password)) {
-                        String role = Roles.extractRole(line);
+                    if (line.contains("\"username\":\"" + username + "\"") && line.contains("\"password\":\"" + password + "\"")) {
+                        String role = extractRole(line);
                         System.out.println("Welcome, " + username + "! Your role is: " + role);
 
                         if ("owner".equalsIgnoreCase(role)) {
@@ -70,5 +89,11 @@ public class UserAuthentication {
             System.out.println("User not found. Please register.");
         }
         return false;
+    }
+
+    private static String extractRole(String jsonLine) {
+        int roleStart = jsonLine.indexOf("\"role\":\"") + 8;
+        int roleEnd = jsonLine.indexOf("\"", roleStart);
+        return jsonLine.substring(roleStart, roleEnd);
     }
 }

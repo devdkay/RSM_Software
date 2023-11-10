@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
+import org.json.JSONObject;
 
 public class TenantManagement {
     public static void addTenant(Scanner scanner) {
@@ -22,9 +23,11 @@ public class TenantManagement {
             String line;
             System.out.println("List of Tenants:");
             while ((line = reader.readLine()) != null) {
-                String[] userInfo = line.split(" ");
-                if (userInfo.length == 3 && "tenant".equalsIgnoreCase(userInfo[2])) {
-                    String tenantUsername = userInfo[0];
+                JSONObject userJson = new JSONObject(line);
+                String role = userJson.getString("role");
+
+                if ("tenant".equalsIgnoreCase(role)) {
+                    String tenantUsername = userJson.getString("username");
                     System.out.println("Tenant: " + tenantUsername);
                 }
             }
