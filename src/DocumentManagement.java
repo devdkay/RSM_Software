@@ -15,7 +15,7 @@ public class DocumentManagement {
             System.out.print("Enter your choice: ");
 
             int documentManagementChoice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine(); 
 
             switch (documentManagementChoice) {
                 case 1:
@@ -34,7 +34,7 @@ public class DocumentManagement {
             System.out.print("Enter your choice: ");
 
             int tenantChoice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine(); 
 
             switch (tenantChoice) {
                 case 1:
@@ -94,7 +94,7 @@ public class DocumentManagement {
         }
     }
 
-    private static void readDocument(Scanner scanner) {
+    static void readDocument(Scanner scanner) {
         System.out.print("Enter the document name to read: ");
         String documentName = scanner.nextLine();
 

@@ -3,6 +3,15 @@ import java.util.Scanner;
 public class PaymentManagement {
     public static void makePayment(Scanner scanner, String username, String role) {
         if ("tenant".equalsIgnoreCase(role)) {
+            System.out.print("Enter the amount of rent to pay: ");
+            double amount = scanner.nextDouble();
+            scanner.nextLine(); // Consume newline
+
+            if (amount <= 0) {
+                System.out.println("Invalid amount. Please enter a positive value.");
+                return;
+            }
+            
             System.out.println("Select a payment method:");
             System.out.println("1. Apple Pay");
             System.out.println("2. PayPal");
@@ -11,7 +20,7 @@ public class PaymentManagement {
             System.out.print("Enter your choice: ");
 
             int paymentMethodChoice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine(); 
 
             switch (paymentMethodChoice) {
                 case 1:
@@ -37,17 +46,20 @@ public class PaymentManagement {
 
     private static void makeApplePayPayment() {
         System.out.println("Processing Apple Pay payment...");
-        // Add logic for Apple Pay
+        // logic for Apple Pay
+        notifyOwner("tenant", 345);
     }
 
     private static void makePayPalPayment() {
         System.out.println("Processing PayPal payment...");
-        // Add logic for PayPal
+        // logic for PayPal
+        notifyOwner("tenant", 345);
     }
 
     private static void makeGooglePayPayment() {
         System.out.println("Processing Google Pay payment...");
-        // Add logic for Google Pay
+        // logic for Google Pay
+        notifyOwner("tenant", 345);
     }
 
     private static void makeCardPayment(Scanner scanner) {
@@ -61,11 +73,12 @@ public class PaymentManagement {
         String cvv = scanner.nextLine();
 
         System.out.println("Processing Credit/Debit Card payment...");
-        // Add logic for Credit/Debit Card payment
+        // logic for Credit/Debit Card payment
+        notifyOwner("tenant", 345);
     }
 
     private static void notifyOwner(String tenantUsername, double amount) {
-        // Replace this with actual notification logic (e.g., sending an email to the owner)
+        // notification logic (sending an email to the owner)
         System.out.println("Notification sent to owner: Tenant " + tenantUsername +
                 " has paid rent of $" + amount);
     }

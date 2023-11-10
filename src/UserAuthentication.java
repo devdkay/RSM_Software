@@ -6,12 +6,8 @@ public class UserAuthentication {
         try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] userInfo = line.split(" ");
-                if (userInfo.length == 3) {
-                    String storedUsername = userInfo[0];
-                    if (username.equals(storedUsername)) {
-                        return true;
-                    }
+                if (line.contains("username") && line.contains(username)) {
+                    return true;
                 }
             }
         } catch (IOException e) {
@@ -32,7 +28,7 @@ public class UserAuthentication {
             String role = scanner.nextLine();
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt", true))) {
-                writer.write(username + " " + password + " " + role);
+                writer.write("[username: " + username + "\n password: " + password + "\n role: " + role + "],");
                 writer.newLine();
                 System.out.println("User registered successfully!");
             } catch (IOException e) {
@@ -54,23 +50,16 @@ public class UserAuthentication {
             try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    String[] userInfo = line.split(" ");
-                    if (userInfo.length == 3) {
-                        String storedUsername = userInfo[0];
-                        String storedPassword = userInfo[1];
-                        String role = userInfo[2];
+                    if (line.contains("password") && line.contains(password)) {
+                        String role = Roles.extractRole(line);
+                        System.out.println("Welcome, " + username + "! Your role is: " + role);
 
-                        if (username.equals(storedUsername) && password.equals(storedPassword)) {
-                            System.out.println("Welcome, " + username + "! Your role is: " + role);
-
-                            DocumentManagement.manageDocuments(scanner, role);
-
-                            if ("tenant".equalsIgnoreCase(role)) {
-                                PaymentManagement.makePayment(scanner, username, role);
-                            }
-                            return true;
+                        if ("owner".equalsIgnoreCase(role)) {
+                            Roles.handleOwnerOptions(scanner);
+                        } else if ("tenant".equalsIgnoreCase(role)) {
+                            Roles.handleTenantOptions(scanner, username);
                         }
-
+                        return true;
                     }
                 }
             } catch (IOException e) {
@@ -81,6 +70,5 @@ public class UserAuthentication {
             System.out.println("User not found. Please register.");
         }
         return false;
-
     }
 }

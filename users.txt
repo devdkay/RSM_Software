@@ -1,3 +1,13 @@
-Dev 123456 owner
-manav manav owner
-man man tenant
+{
+ username: manav
+ password: manav
+ role: owner
+},
+{
+ username: man
+ password: man
+ role: tenant
+},
+[username: ee
+ password: ee
+ role: owner],

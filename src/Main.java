@@ -16,14 +16,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Welcome to User Authentication System");
+            System.out.println("Welcome to Property Managment System");
             System.out.println("1. Login");
             System.out.println("2. Sign Up");
             System.out.println("3. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine(); 
 
             if (choice == 1) {
                 UserAuthentication.login(scanner);
